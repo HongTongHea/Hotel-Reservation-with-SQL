@@ -1,0 +1,36 @@
+﻿@model AppUser
+@{
+    ViewData["Title"] = "Relax Hotel | User Detail";
+}
+
+<div class="modal fade" id="DetailUser-@Model.AppUserID" tabindex="-1" aria-labelledby="DetailUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog text-black ">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <div class="d-flex align-items-center justify-content-center">
+                    <img src="~/img/logo-hotel-bg.png" width="40px" />
+                    <h5 class="ms-2">@ViewData["Title"]</h5>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" >
+                <div class="row mb-4">
+                    <div class="col-md-4 text-center">
+                        <img src="@Model.Pictures" alt="User Image" class="img-thumbnail" style="width: 150px; height: 150px; object-fit: cover;" />
+                    </div>
+                    <div class="col-md-8 text-start">
+                        <p class="mb-3"><strong>User Name : </strong>@Model.Username</p>
+                        <p><strong>position:</strong> @Model.Role</p>
+                        <p class="mb-3"><strong>Email :</strong> @Model.Email</p>
+                    </div>
+                </div>
+                <div class="alert alert-dark text-black">
+                    <p><strong>Additional Notes:</strong> You can display more user details or actions here.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"> <i class="fas fa-times"></i> Close</button>
+            </div>
+        </div>
+    </div>
+</div>

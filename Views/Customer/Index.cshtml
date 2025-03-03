@@ -1,0 +1,112 @@
+﻿@model IEnumerable<Hotel_Reservation.Models.Customer>
+
+@{
+    int index = 1;
+    ViewData["Title"] = "Relax Hotel | Information Customer";
+}
+
+<div class="card">
+    <div class="card-header bg-dark text-white">
+        <div class="d-flex align-items-center justify-content-center">
+            <img src="~/img/logo-hotel-bg.png" width="60px" />
+        <h5 class="ms-2">@ViewData["Title"]</h5>
+        </div>
+    </div>
+    <div class="card-body">
+        <button type="button" class="btn btn-success mb-2" data-bs-toggle="modal" data-bs-target="#AddCustomer">
+            <i class="fa-solid fa-circle-plus"></i> Add New
+        </button>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered align-middle" id="DataTable">
+                <thead class="table-dark">
+                    <tr>
+                        <th style="width: 5%;">No</th>
+                        <th style="width: 30%;">F-Name</th>
+                        <th style="width: 25%;">L-Name</th>
+                        <th style="width: 5%;">Sex</th>
+                        <th style="width: 25%;">Email</th>
+                        <th style="width: 15%;">Phone</th>
+                        <th style="width: 40%;">Passport</th>
+                        <th style="width: 5%;">Country</th>
+                        <th style="width: 15%;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="text-center">@index</td>
+
+                                <td>@item.FirstName</td>
+                                <td>@item.LastName</td>
+                                <td>@item.Gender</td>
+                                <td>@item.Email</td>
+                                <td>@item.PhoneNumber</td>
+                                <td>@item.PassportNumber</td>
+                                <td>@item.Country</td>
+                                <td class="text-center">
+                                    <div class="d-flex align-items-center">
+                                    <button type="button" class="btn btn-info btn-sm me-2" data-bs-toggle="modal" data-bs-target="@("#EditCustomer-" + item.CustomerID)" data-url="@Url.Action($"Edit/{item.CustomerID}")">
+                                        <i class="fas fa-edit"></i>
+                                    </button> 
+                                    @await Html.PartialAsync("_EditCustomer", item)
+
+                                        <button type="button" class="btn btn-info btn-sm me-2" data-bs-toggle="modal" data-bs-target="@("#DetailCustomer-" + item.CustomerID)" data-url="@Url.Action($"Detail/{item.CustomerID}")">
+                                            <i class="fas fa-info-circle"></i>
+                                        </button> 
+                                        @await Html.PartialAsync("_DetailCustomer", item)
+
+                                    <button type="button" class="btn btn-danger btn-sm me-2" data-bs-toggle="modal" data-bs-target="@("#DeleteCustomer-" + item.CustomerID)" data-url="@Url.Action($"Delete/{item.CustomerID}")">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button> 
+                                    @await Html.PartialAsync("_DeleteCustmer", item)
+                                    </div>
+                                </td>
+                            </tr>
+                            index++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="10" class="text-center text-muted">No users found.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+ </div>
+@await Html.PartialAsync("_CreateCustomer", new Customer())
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="~/js/DataTable.js"></script>
+    @if (TempData["ShowCreateModal"] != null && (bool)TempData["ShowCreateModal"])
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#AddCustomer').modal('show');
+            });
+        </script>
+    }
+    <script>
+        $(document).ready(function () {
+            var successMessage = '@TempData["SuccessMessage"]';
+            if (successMessage) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: successMessage,
+                });
+            }
+        });
+    </script>
+}

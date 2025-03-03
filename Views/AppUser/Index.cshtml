@@ -1,0 +1,126 @@
+﻿@model IEnumerable<Hotel_Reservation.Models.AppUser>
+
+@{
+    int index = 1;
+    ViewData["Title"] = "Relax Hotel | Information User";
+}
+
+
+<div class="card">
+    <div class="card-header bg-dark text-white">
+        <div class="d-flex align-items-center justify-content-center">
+            <img src="~/img/logo-hotel-bg.png" width="60px" />
+            <h5 class="ms-2">@ViewData["Title"]</h5>
+        </div>
+    </div>
+    <div class="card-body">
+        <button type="button" class="btn btn-success mb-2" data-bs-toggle="modal" data-bs-target="#AddUser">
+            <i class="fa-solid fa-circle-plus"></i> Add New
+        </button>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered align-middle" id="DataTable">
+                <thead class="table-dark">
+                    <tr>
+                        <th style="width: 5%;">No</th>
+                        <th style="width: 15%;">Picture</th>
+                        <th style="width: 25%;">User Name</th>
+                        <th style="width: 25%;">Email</th>
+                        <th style="width: 15%;">Position</th>
+                        <th style="width: 40%;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="text-center">@index</td>
+                                <td class="text-center">
+                                    @if (!string.IsNullOrEmpty(item.Pictures))
+                                    {
+                                        <img src="@Url.Content(item.Pictures)" width="50" height="50"
+                                             class="rounded-circle border" style="object-fit: cover;" alt="User Picture" />
+                                    }
+                                    else
+                                    {
+                                        <img src="/img/default-img.png" width="50" height="50"
+                                             class="rounded-circle border" style="object-fit: cover;"
+                                             alt="Default Picture" />
+                                    }
+                                </td>
+                                <td>@item.Username</td>
+                                <td>@item.Email</td>
+                                <td>@item.Role</td>
+                                <td class="text-center">
+
+                                    <a asp-action="Edit" asp-route-id="@item.AppUserID" class="btn btn-primary btn-sm me-2">
+                                        <i class="bi bi-pencil-square"></i>
+
+                                    </a>
+
+
+                                    <button type="button" class="btn btn-info btn-sm me-2" data-bs-toggle="modal"
+                                            data-bs-target="@("#DetailUser-" + item.AppUserID)"
+                                            data-url="@Url.Action($"Detail/{item.AppUserID}")">
+                                        <i class="fas fa-info-circle"></i>
+                                    </button>
+                                    @await Html.PartialAsync("_DetailUser", item)
+                                        
+
+                                    <form asp-action="Delete" asp-route-id="@item.AppUserID" method="post"
+                                          class="d-inline">
+                                        <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Are you sure you want to delete this user?');">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </button>
+                                    </form>
+
+                                </td>
+                            </tr>
+                            index++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="10" class="text-center text-muted">No users found.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@await Html.PartialAsync("_CreateUser", new AppUser())
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="~/js/DataTable.js"></script>
+    @if (TempData["ShowCreateModal"] != null && (bool)TempData["ShowCreateModal"])
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#AddUser').modal('show');
+            });
+        </script>
+    }
+    <script>
+        $(document).ready(function () {
+            var successMessage = '@TempData["SuccessMessage"]';
+            if (successMessage) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: successMessage,
+                });
+            }
+        });
+    </script>
+
+}

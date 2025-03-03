@@ -1,0 +1,119 @@
+﻿@model Room
+@{
+    ViewData["Title"] = "Relax Hotel | Create Rooms";
+}
+<div class="modal fade" id="AddRoom" tabindex="-1" aria-labelledby="AddRoomModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <div class="d-flex align-items-center justify-content-center">
+                    <img src="~/img/logo-hotel-bg.png" width="40px" />
+                    <h5 class="ms-2">@ViewData["Title"]</h5>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body fw-bold">
+                <form asp-action="Create" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-6">
+                            <!-- Room Number -->
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="RoomNumber" class="form-label">Room Number</label>
+                                    <span asp-validation-for="RoomNumber" class="text-danger"></span>
+                                    <input asp-for="RoomNumber" class="form-control" placeholder="Insert Room Number" />
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="RoomType" class="form-label">Room Type</label>
+                                    <span asp-validation-for="RoomType" class="text-danger"></span>
+                                    <select asp-for="RoomType" class="form-select form-control">
+                                        <option value="">Select Room Type</option>
+                                        <option value="Single">Single Room</option>
+                                        <option value="Double">Double Room</option>
+                                        <option value="Suite">Full Room</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="AvailabilityStatus" class="form-label">Room Status</label>
+                                    <span asp-validation-for="AvailabilityStatus" class="text-danger"></span>
+                                    <select asp-for="AvailabilityStatus" class="form-select form-control">
+                                        <option value="">Select Room Status</option>
+                                        <option value="Available">Not Yet Booking</option>
+                                        <option value="Booked">Booking</option>
+                                    </select>
+                                </div>
+
+
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="Floor" class="form-label">Room Floor</label>
+                                    <span asp-validation-for="Floor" class="text-danger"></span>
+                                    <input asp-for="Floor" type="number" class="form-control" placeholder="Insert Room Floor" />
+                                </div>
+
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="BedCount" class="form-label">Bed Number</label>
+                                    <span asp-validation-for="BedCount" class="text-danger"></span>
+                                    <input asp-for="BedCount" type="number" class="form-control" placeholder="Insert Bed Number" />
+                                </div>
+
+                    
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="RoomPrice" class="form-label">Room Price</label>
+                                    <span asp-validation-for="RoomPrice" class="text-danger"></span>
+                                    <input asp-for="RoomPrice" class="form-control" placeholder="Insert Room Price" />
+                                </div>
+
+                                <div class="col-md-12 form-group">
+                                    <label asp-for="Description" class="form-label">Description</label>
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                    <textarea asp-for="Description" class="form-control"></textarea>
+                                </div>
+                            </div>
+                          
+                        </div>
+    
+                        <div class="col-6">
+                            <div class="col-md-12 form-group">
+                                <label for="pictureFile" class="form-label">Select Picture</label>
+                                <input type="file" name="pictureFile" id="pictureFile" class="form-control d-none" accept="image/*" onchange="showPreview(event)" />
+                                <div id="preview" onclick="triggerFileInput()" style="cursor: pointer;">
+                                    <img src="/img/default-img.png" alt="Default Image" class="img-thumbnail" style="width: 350px; height: 350px; object-fit: cover;" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Save
+                        </button>
+
+                        <a class="btn btn-secondary text-white" data-bs-dismiss="modal">
+                            <i class="fas fa-times"></i> Close
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function triggerFileInput() {
+        document.getElementById('pictureFile').click();
+    }
+
+    function showPreview(event) {
+        var file = event.target.files[0];
+        var reader = new FileReader();
+        var output = document.getElementById('preview').getElementsByTagName('img')[0];
+        if (file) {
+            reader.onload = function () {
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            output.src = "/img/default-img.png";
+        }
+    }
+</script>

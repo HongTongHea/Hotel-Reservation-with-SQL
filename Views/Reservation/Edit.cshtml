@@ -1,0 +1,71 @@
+﻿@model Hotel_Reservation.Models.Reservation
+
+@{
+    ViewData["Title"] = "Relax Hotel | Edit Reservation";
+}
+
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="ReservationID" />
+    <div class="row">
+        <div class="form-group col-12 col-md-6">
+            <label asp-for="CustomerID" class="control-label"></label>
+            <select asp-for="CustomerID" class="form-control" asp-items="ViewBag.Customers"></select>
+        </div>
+        <div class="form-group col-12 col-md-6">
+            <label asp-for="RoomID" class="control-label"></label>
+            <select asp-for="RoomID" class="form-control" asp-items="ViewBag.Rooms"></select>
+        </div>
+        <div class="form-group col-12 col-md-6">
+            <label asp-for="CheckInDate" class="control-label"></label>
+            <input asp-for="CheckInDate" class="form-control" />
+            <span asp-validation-for="CheckInDate" class="text-danger"></span>
+        </div>
+        <div class="form-group col-12 col-md-6">
+            <label asp-for="CheckOutDate" class="control-label"></label>
+            <input asp-for="CheckOutDate" class="form-control" />
+            <span asp-validation-for="CheckOutDate" class="text-danger"></span>
+        </div>
+        <div class="form-group col-12 col-md-6">
+            <label asp-for="NumberOfChildren" class="control-label"></label>
+            <input asp-for="NumberOfChildren" class="form-control" />
+            <span asp-validation-for="NumberOfChildren" class="text-danger"></span>
+        </div>
+        <div class="form-group col-12 col-md-6">
+            <label asp-for="NumberOfAdults" class="control-label"></label>
+            <input asp-for="NumberOfAdults" class="form-control" />
+            <span asp-validation-for="NumberOfAdults" class="text-danger"></span>
+        </div>
+        <div class="form-group col-12 col-md-6">
+            <label asp-for="TotalPrice" class="control-label"></label>
+            <input asp-for="TotalPrice" class="form-control" />
+            <span asp-validation-for="TotalPrice" class="text-danger"></span>
+        </div>
+        <div class="form-group col-12 col-md-6">
+            <label asp-for="PaymentStatus" class="control-label"></label>
+            <input asp-for="PaymentStatus" class="form-control" />
+            <span asp-validation-for="PaymentStatus" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> Save
+        </button>
+
+        <a class="btn btn-secondary text-white" data-bs-dismiss="modal">
+            <i class="fas fa-times"></i> Close
+        </a>
+    </div>
+</form>
+<div class="float-end">
+    <form asp-action="Delete" asp-route-id="@Model.ReservationID" method="post" class="d-inline">
+        <button type="submit" class="btn btn-danger mr-3"
+                onclick="return confirm('Are you sure you want to delete this reservation?');">
+            <i class="bi bi-trash-fill"></i> Delete
+
+        </button>
+    </form>
+</div>
+@*      <a asp-action="Delete" asp-route-id="@Model.ReservationID" class="btn btn-danger btn-sm">
+            <i class="fas fa-trash"></i> Delete
+        </a> *@

@@ -1,0 +1,71 @@
+﻿@model Employee
+@{
+    ViewData["Title"] = "Relax Hotel | Edit Employee";
+}
+<div class="modal fade" id="EditEmployee-@Model.EmployeeID" tabindex="-1" aria-labelledby="EditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <div class="d-flex align-items-center justify-content-center">
+                    <img src="~/img/logo-hotel-bg.png" width="40px" />
+                    <h5 class="ms-2">@ViewData["Title"]</h5>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-start fw-bold">
+                <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="EmployeeID" />
+                    <div class="row fw-bold">
+                        <div class="col-md-6">
+                            <label asp-for="FirstName">Frist Name</label>
+                            <input asp-for="FirstName" class="form-control" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="LastName">Last Name</label>
+                            <input asp-for="LastName" class="form-control" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Email">Email</label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="PhoneNumber">Phone Number</label>
+                            <input asp-for="PhoneNumber" class="form-control" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Position">Position</label>
+                            <select asp-for="Position" class="form-control">
+                                <option value="Manager">Manager</option>
+                                <option value="Receptionist">Receptionist</option>
+                                <option value="Housekeeper">Cleaner</option>
+                                <option value="Chef">Chef</option>
+                                <option value="Waiter">Employee</option>
+                                <option value="Security">Security</option>
+                            </select>
+                            <span asp-validation-for="Position" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Salary">Salary</label>
+                            <input asp-for="Salary" class="form-control" />
+                            <span asp-validation-for="Salary" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Save
+                        </button>
+
+                        <a class="btn btn-secondary text-white" data-bs-dismiss="modal">
+                            <i class="fas fa-times"></i> Close
+                        </a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

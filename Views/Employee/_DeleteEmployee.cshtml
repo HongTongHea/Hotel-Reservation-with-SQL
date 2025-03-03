@@ -1,0 +1,34 @@
+﻿@model Hotel_Reservation.Models.Employee
+@{
+    ViewData["Title"] = "Relax Hotel | លុបបុគ្គលិក";
+}
+<div class="modal fade" id="DeleteEmployee-@Model.EmployeeID" tabindex="-1" aria-labelledby="DeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <div class="d-flex align-items-center justify-content-center">
+                    <img src="~/img/logo-hotel-bg.png" width="40px" />
+                    <h5 class="ms-2">@ViewData["Title"]</h5>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="ConfirmDelete" method="post">
+                    <!-- Hidden input for Employee ID -->
+                    <input type="hidden" asp-for="EmployeeID" />
+
+                    <div class="mb-3 fw-bold">
+                        <p>តើអ្នកកប្រាកដទេថាចង់លុបបុគ្គលិកនេះ?</p>
+                        <p><strong>@Model.FirstName @Model.LastName</strong></p>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">បោះបង់</button>
+                        <button type="submit" class="btn btn-danger">លុប</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

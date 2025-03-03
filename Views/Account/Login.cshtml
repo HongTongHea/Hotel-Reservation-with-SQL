@@ -1,0 +1,126 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="~/img/logo-hotel-bg.png" rel="icon">
+    <meta name="description" content="Relax Hotel Login">
+    <meta name="author" content="Relax Hotel">
+    <title>Relax Hotel - Login</title>
+
+    <!-- External CSS -->
+    <link href="~/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="~/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/css/ruang-admin.min.css" rel="stylesheet" type="text/css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+
+<style>
+
+    body {
+        background-image: url('@Url.Content("~/img/hotel.jpg")');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+        backdrop-filter: blur(3px);
+        font-family: 'Poppins', sans-serif;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .container-login{
+        padding:5%;
+    }
+</style>
+
+
+<body>
+    <!-- Login Content -->
+    <div class="container-login">
+        <div class="row justify-content-center">
+            <div class="col-xl-6 col-lg-6 col-md-12">
+                <div class="card shadow-sm my-5 w-75 offset-1">
+                    <div class="card-body p-0">
+                        <div class="col-lg-12">
+                            <div class="login-form">
+                                <div class="text-center mb-2">
+                                    <img src="~/img/logo-hotel-bg.png" width="70px" style="background-color: #2b2b30; border-radius: 50px;" />
+                                </div>
+                                <div class="text-center">
+                                    <h3 class="text-gray-900 mb-2" style="font-weight: bolder;">
+                                        Login
+                                    </h3>
+                                    <p>Login to access your system!</p>
+                                </div>
+
+                                <!-- Form Start -->
+                                @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    @if (ViewBag.SuccessMessage != null)
+                                    {
+                                        <div class="alert alert-success">
+                                            @ViewBag.SuccessMessage
+                                        </div>
+                                    }
+
+                                    @if (ViewBag.ErrorMessage != null)
+                                    {
+                                        <div class="alert alert-danger">
+                                            @ViewBag.ErrorMessage
+                                        </div>
+                                    }
+
+                                    <div class="form-group">
+                                        <input type="text" class="form-control"
+                                               id="Username" name="username"
+                                               placeholder="Username" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <input type="password" class="form-control"
+                                               id="Password" name="password"
+                                               placeholder="Password" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox small" style="line-height: 1.5rem;">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck">
+                                            <label class="custom-control-label" for="customCheck">
+                                                Remember Me
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-block text-white fw-bolder" style="background-color: #2b2b30;">
+                                            Login
+                                        </button>
+                                    </div>
+                                }
+                                <!-- Form End -->
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="~/js/ruang-admin.min.js"></script>
+</body>
+</html>

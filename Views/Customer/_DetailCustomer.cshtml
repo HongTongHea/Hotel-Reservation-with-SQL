@@ -1,0 +1,33 @@
+﻿@model Customer
+@{
+    ViewData["Title"] = "Relax Hotel | Customer Detail";
+}
+
+<div class="modal fade" id="DetailCustomer-@Model.CustomerID" tabindex="-1" aria-labelledby="DetailUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog text-black">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <div class="d-flex align-items-center justify-content-center">
+                    <img src="~/img/logo-hotel-bg.png" width="40px" />
+                    <h5 class="ms-2">@ViewData["Title"]</h5>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-4">
+                    <div class="col-md-12 text-start">
+                        <p class="mb-3"><strong>Customer Name: </strong>@Model.FirstName @Model.LastName</p>
+                        <p class="mb-3"><strong>Gender : </strong>@Model.Gender</p>
+                        <p class="mb-3"><strong>Email : </strong>@Model.Email</p>
+                        <p class="mb-3"><strong>Phone Number : </strong>@Model.PhoneNumber</p>
+                        <p class="mb-3"><strong>Passport No: </strong>@Model.PassportNumber</p>
+                        <p class="mb-3"><strong>Countries: </strong>@Model.Country</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"> <i class="fas fa-times"></i> Close</button>
+            </div>
+        </div>
+    </div>
+</div>

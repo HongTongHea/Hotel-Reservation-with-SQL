@@ -1,0 +1,126 @@
+﻿@model IEnumerable<Hotel_Reservation.Models.Reservation>
+
+@{
+    ViewData["Title"] = "Relax Hotel | Information Reservation Rooms";
+}
+
+<div class="card">
+    <div class="card-header bg-dark text-white">
+        <div class="d-flex align-items-center justify-content-center">
+            <img src="~/img/logo-hotel-bg.png" width="60px" />
+            <h5 class="ms-2">@ViewData["Title"]</h5>
+        </div>
+    </div>
+   
+    
+    <div class="card-body">
+        <button type="button" class="btn btn-success mb-2" data-bs-toggle="modal" data-bs-target="#AddReservation">
+            <i class="fa-solid fa-circle-plus"></i> Add New
+        </button>
+        <div id="calendar"></div>
+    </div>
+</div>
+
+@await Html.PartialAsync("Create", new Reservation())
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/km.js"></script> <!-- Khmer Language -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        locale: 'English',
+        events: @Html.Raw(Json.Serialize(Model.Select(r => new
+        {
+            id = r.ReservationID,
+            title = "Rooms " + r.Room.RoomNumber + " - " + r.Customer.FirstName + " " + r.Customer.LastName,
+            start = r.CheckInDate.ToString("yyyy-MM-dd"),
+            end = r.CheckOutDate.ToString("yyyy-MM-dd"),
+            color = "#007bff"
+        }))),
+        eventClick: function (info) {
+            var ReservationID = info.event.id;
+
+            // Check if the modal already exists
+            var modal = document.getElementById(`EditReservation-${ReservationID}`);
+            if (!modal) {
+                // Create the modal dynamically
+                var modalHtml = `
+                    <div id="EditReservation-${ReservationID}" class="modal fade" tabindex="-1" aria-labelledby="EditModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header bg-dark text-white">
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <img src="/img/logo-hotel-bg.png" width="40px" />
+                                        <h5 class="ms-2">Relax Hotel | Edit Reservation</h5>
+                                    </div>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-start fw-bold">
+                                    <!-- Loading spinner -->
+                                    <div class="text-center">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.insertAdjacentHTML('beforeend', modalHtml);
+            }
+
+            // Show the modal
+            var modalInstance = new bootstrap.Modal(document.getElementById(`EditReservation-${ReservationID}`));
+            modalInstance.show();
+
+            // Fetch the modal content via AJAX
+            fetch(`/Reservation/Edit/${ReservationID}`)
+                .then(response => response.text())
+                .then(html => {
+                    // Inject the fetched HTML into the modal body
+                    document.querySelector(`#EditReservation-${ReservationID} .modal-body`).innerHTML = html;
+                })
+                .catch(error => {
+                    console.error('Error loading edit form:', error);
+                    document.querySelector(`#EditReservation-${ReservationID} .modal-body`).innerHTML = '<p>Error loading edit form.</p>';
+                });
+        }
+    });
+
+    calendar.render();
+});
+</script>
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="~/js/DataTable.js"></script>
+
+    @if (TempData["ShowCreateModal"] != null && (bool)TempData["ShowCreateModal"])
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#AddReservation').modal('show');
+            });
+        </script>
+    }
+    <script>
+        $(document).ready(function () {
+            var successMessage = '@TempData["SuccessMessage"]';
+            if (successMessage) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: successMessage,
+                });
+            }
+        });
+    </script>
+}

@@ -1,0 +1,93 @@
+﻿@model Billing
+
+@{
+    ViewData["Title"] = "Relax Hotel | Billing Details";
+}
+
+<div class="modal fade" id="DetailBill-@Model.BillingID" tabindex="-1" aria-labelledby="DetailUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog text-black">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <div class="d-flex align-items-center justify-content-center">
+                    <img src="~/img/logo-hotel-bg.png" width="50px" />
+                    <h5 class="ms-2">@ViewData["Title"]</h5>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="printableArea">
+                <div class="receipt">
+                    <div class="text-center">
+                        <img src="~/img/logo-hotel-bg.png" width="60px" class="mb-2" />
+                        <h5 class="fw-bold">Relax Hotel</h5>
+                        <p class="mb-0">Siem Reap Hotel Street, City</p>
+                        <p class="mb-0">Phone: (+855) 456-7890</p>
+                        <p class="mb-3">Email: info@relaxhotel.com</p>
+                        <hr />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-start">
+                            <table class="table table-borderless">
+                                <tbody>
+                                    <tr><td><strong>Billing ID:</strong></td><td>@Model.BillingID</td></tr>
+                                    <tr><td><strong>Reservation ID:</strong></td><td>@Model.ReservationID</td></tr>
+                                    <tr><td><strong>Customer Name:</strong></td><td>@Model.Customer.FirstName @Model.Customer.LastName</td></tr>
+                                    <tr><td><strong>Room ID:</strong></td><td>@Model.Room.RoomNumber</td></tr>
+                                    <tr><td><strong>Amount:</strong></td><td>$@Model.Amount</td></tr>
+                                    <tr><td><strong>Check In:</strong></td><td>@Model.StartDate.ToString("yyyy-MM-dd")</td></tr>
+                                    <tr><td><strong>Check Out:</strong></td><td>@Model.EndDate.ToString("yyyy-MM-dd")</td></tr>
+                                    <tr><td><strong>Status:</strong></td><td>@Model.Status</td></tr>
+                                </tbody>
+                            </table>
+                            <hr />
+                            <p class="text-center fw-bold">Thank you for choosing Relax Hotel!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-print-none">
+                <button type="button" class="btn btn-success" onclick="printBill()">  <i class="fas fa-print"></i> Print</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">  <i class="fas fa-times"></i>Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Styling for the receipt */
+    .receipt {
+        font-family: "Arial", sans-serif;
+        font-size: 14px;
+        padding: 15px;
+        border: 2px solid #000;
+        border-radius: 5px;
+        max-width: 400px;
+        margin: auto;
+        background: white;
+    }
+
+    /* Print-specific styles */
+    @@media print {
+        body * {
+            visibility: hidden;
+        }
+        #printableArea, #printableArea * {
+            visibility: visible;
+        }
+        #printableArea {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: auto;
+        }
+        .d-print-none {
+            display: none !important;
+        }
+    }
+</style>
+
+<script>
+    function printBill() {
+        window.print();
+    }
+</script>

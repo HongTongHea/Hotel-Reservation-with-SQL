@@ -1,0 +1,203 @@
+﻿@{
+    ViewData["Title"] = "Relax Hotel | Dashboard";
+}
+
+<div class="container mt-4">
+
+    <!-- Dashboard Cards -->
+    <div class="row">
+        <!-- New Booking -->
+        <div class="col-md-3">
+            <div class="card text-white shadow rounded-card" style="background-color: #0d6efd; border-radius: 10px; padding: 15px;">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="fw-bold mb-1" style="font-size: 1.5rem;">259</h2>
+                    <h5 class="card-title mb-0" style="font-weight: bold; opacity: 0.8;">New Booking</h5>
+                    <div class="position-absolute" style="top: 50px; right: 20px;">
+                        <i class="fa-solid fa-bookmark" style="color: white; font-size: 2rem; opacity: 0.8;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Schedule Room -->
+        <div class="col-md-3">
+            <div class="card text-white shadow rounded-card" style="background-color: #20C997; border-radius: 10px; padding: 15px;">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="fw-bold mb-1" style="font-size: 1.5rem;">259</h2>
+                    <h5 class="card-title mb-0" style="font-weight: bold; opacity: 0.8;">Schedule Room</h5>
+                    <div class="position-absolute" style="top: 50px; right: 20px;">
+                        <i class="fa-solid fa-calendar-check" style="color: white; font-size: 2rem; opacity: 0.8;"></i>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Check In -->
+        <div class="col-md-3">
+            <div class="card text-white shadow rounded-card" style="background-color: #FFC107; border-radius: 10px; padding: 15px;">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="fw-bold mb-1" style="font-size: 1.5rem;">259</h2>
+                    <h5 class="card-title mb-0" style="font-weight: bold; opacity: 0.8;">Check In</h5>
+                    <div class="position-absolute" style="top: 50px; right: 20px;">
+
+                        <i class="fa-solid fa-arrow-right-to-bracket" style="color: white; font-size: 2rem; opacity: 0.8;"></i>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Check Out -->
+        <div class="col-md-3">
+            <div class="card text-white shadow rounded-card" style="background-color: #FD7E14; border-radius: 10px; padding: 15px;">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="fw-bold mb-1" style="font-size: 1.5rem;">259</h2>
+                    <h5 class="card-title mb-0" style="font-weight: bold; opacity: 0.8;">Check Out</h5>
+                    <div class="position-absolute" style="top: 50px; right: 20px;">
+                        <i class="fa-solid fa-arrow-right-from-bracket" style="color: white; font-size: 2rem; opacity: 0.8;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Additional Widgets (Available Room, Booking Stats, Graphs) -->
+    <div class="row mt-4">
+        <!-- Left Column: Reservation Statistics -->
+        <!-- Right Column: Available Rooms + Booking Room Today -->
+        <div class="col-md-6 d-flex flex-column gap-3">
+            <!-- Available Rooms -->
+            <div class="card shadow">
+                <div class="card-body text-center">
+                    <h5>Available Room Today</h5>
+                    <h2 class="fw-bold">785</h2>
+                    <div class="circle" style="width: 70px; height:70px; border:5px solid #1362FC; border-radius: 50%;display: flex;position:absolute; top:30px; right:50px;"></div>
+                </div>
+            </div>
+
+
+            <!-- Booking Room Today -->
+            <div class="card shadow-lg rounded-lg">
+                <div class="card-body">
+                    <h5 class="card-title text-center mb-4">Booking Room Today</h5>
+                    <div class="progress-container">
+                        <div class="progress mb-2" style="height: 20px; border-radius: 10px;">
+                            <div class="progress-bar" style="width: 75%; border-radius: 10px; background-color: #32CD32;">
+                                <span class="progress-text">75%</span>
+                            </div>
+                        </div>
+
+                        <div class="progress mb-2" style="height: 20px; border-radius: 10px;">
+                            <div class="progress-bar bg-info" style="width: 20%; border-radius: 10px;">
+                                <span class="progress-text">20%</span>
+                            </div>
+                        </div>
+                        <div class="progress mb-2" style="height: 20px; border-radius: 10px;">
+                            <div class="progress-bar" style="width: 90%; border-radius: 10px; background-color: #FF00FF;">
+                                <span class="progress-text">90%</span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="d-flex justify-content-between mt-3">
+                        <span class="legend d-flex align-items-center">
+                            <span class="dot bg-success mr-2"></span> Pending <strong>265</strong>
+                        </span>
+                        <span class="legend d-flex align-items-center">
+                            <span class="dot bg-info mr-2"></span> Done <strong>65</strong>
+                        </span>
+                        <span class="legend d-flex align-items-center">
+                            <span class="dot bg-purple mr-2"></span> Finished <strong>782</strong>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="fs-5">Reservation Statistic</span>
+                        <span class="fw-bold fs-5">455</span>
+                        <span class="text-secondary">Check In</span>
+                        <span class="fw-bold fs-5">321</span>
+                        <span class="text-secondary">Check Out</span>
+                    </div>
+                    <section class="charts">
+                        <!-- Line Chart Container -->
+                        <div class="chart-container">
+                            <canvas id="lineChart"></canvas>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+
+</style>
+
+
+<!-- Chart.js for Graphs -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Initialize Line Chart
+        const lineCtx = document.getElementById('lineChart').getContext('2d');
+        const lineChart = new Chart(lineCtx, {
+            type: 'line', // Specify chart type
+            data: {
+                labels: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10'], // X-axis labels
+                datasets: [
+                    {
+                        label: 'Check In', // Dataset label
+                        data: [120, 190, 300, 500, 200, 300, 234, 320, 305, 450], // Data points
+                        backgroundColor: 'rgba(74, 144, 226, 0.2)', // Fill color below the line
+                        borderColor: 'rgba(74, 144, 226, 1)', // Line color
+                        borderWidth: 2, // Line width
+                        tension: 0.4 // Curvature of the line
+                    },
+                    {
+                        label: 'Check Out', // Dataset label
+                        data: [150, 230, 270, 400, 150, 350, 400, 450, 250, 400], // Data points
+                        backgroundColor: 'rgba(255, 159, 64, 0.2)', // Fill color below the line
+                        borderColor: 'rgba(255, 159, 64, 1)', // Line color
+                        borderWidth: 2, // Line width
+                        tension: 0.4 // Curvature of the line
+                    }
+                ]
+            },
+            options: {
+                responsive: true, // Chart responsiveness
+                animation: {
+                    duration: 1000, // Animation duration in ms
+                    easing: 'easeInOutQuart' // Animation easing function
+                },
+                plugins: {
+                    legend: {
+                        display: true, // Display the legend
+                        position: 'top' // Position of the legend
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false // Hide vertical grid lines
+                        }
+                    }
+                }
+            }
+        });
+    });
+
+
+</script>

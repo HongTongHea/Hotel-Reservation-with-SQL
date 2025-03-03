@@ -1,0 +1,100 @@
+﻿@model Room
+
+@{
+    ViewData["Title"] = "Relax Hotel | Edit Rooms";
+}
+<div class="card mt-2 mb-4">
+    <div class="card-header bg-dark text-white">
+        <div class="d-flex align-items-center justify-content-center">
+            <img src="~/img/logo-hotel-bg.png" width="50px" />
+            <h4 class="ms-2">@ViewData["Title"]</h4>
+        </div>
+    </div>
+    <div class="card-body fw-bold">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="RoomID" />
+            <div class="row g-3">
+                <div class="col-6">
+                    <div class="row">
+                    <div class="col-12 col-md-6 form-group">
+                        <label asp-for="RoomNumber">Room Number</label>
+                        <span asp-validation-for="RoomNumber" class="text-danger"></span>
+                        <input asp-for="RoomNumber" class="form-control" />
+                    </div>
+                    <div class="col-md-6 form-group">
+                            <label asp-for="RoomType" class="form-label">Type Of Rooms</label>
+                        <span asp-validation-for="RoomType" class="text-danger"></span>
+                        <select asp-for="RoomType" class="form-control">
+                                <option value="">Select Type of Rooms</option>
+                                <option value="Single">Single Bed</option>
+                                <option value="Double">Double Bed</option>
+                                <option value="Suite">Big Bed</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-6 form-group">
+                            <label asp-for="AvailabilityStatus">Room Status</label>
+                        <span asp-validation-for="AvailabilityStatus" class="text-danger"></span>
+                        <select asp-for="AvailabilityStatus" class="form-control">
+                                <option value="">Select Room Status</option>
+                            <option value="Available">Have</option>
+                            <option value="Booked">Booking</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 form-group">
+                            <label asp-for="Floor" class="form-label">Room Floor</label>
+                        <span asp-validation-for="Floor" class="text-danger"></span>
+                        <input asp-for="Floor" type="number" class="form-control" placeholder="Enter Floor" />
+                    </div>
+                    <div class="col-md-6 form-group">
+                            <label asp-for="BedCount" class="form-label">Bed</label>
+                        <span asp-validation-for="BedCount" class="text-danger"></span>
+                        <input asp-for="BedCount" type="number" class="form-control" placeholder="Enter Bed Count" />
+                    </div>
+                    <div class="col-md-6 form-group">
+                            <label asp-for="RoomPrice" class="form-label">Room Price</label>
+                        <span asp-validation-for="RoomPrice" class="text-danger"></span>
+                        <input asp-for="RoomPrice" class="form-control" placeholder="Enter Room Price" />
+                    </div>
+                    <div class="col-md-6 form-group">
+                            <label asp-for="Description" class="form-label">Description</label>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                        <textarea asp-for="Description" class="form-control" placeholder="Enter Description"></textarea>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="col-12 col-md-12 form-group" style="margin-left:120px;">
+                        <label for="pictureFile">Select Picture</label>
+                        <input type="file" name="pictureFile" id="pictureFile" class="form-control" accept="image/*" style="display: none;" onchange="showPreview(event)" />
+                        <div id="preview" onclick="triggerFileInput()">
+                            <img src="@Model.Pictures" alt="Room Image" class="img-thumbnail" style="width: 350px; height: 350px; object-fit: cover;" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Save
+                </button>
+                <a asp-action="Index" class="btn btn-secondary text-white">
+                    <i class="fas fa-times"></i> Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function triggerFileInput() {
+        document.getElementById('pictureFile').click();
+    }
+
+    function showPreview(event) {
+        var file = event.target.files[0];
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('preview').getElementsByTagName('img')[0];
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(file);
+    }
+</script>
