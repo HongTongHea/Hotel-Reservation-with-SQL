@@ -177,6 +177,7 @@ namespace Hotel_Reservation.Controllers
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Reservation deleted successfully!";
             }
+
             return RedirectToAction(nameof(Index));
         }
 

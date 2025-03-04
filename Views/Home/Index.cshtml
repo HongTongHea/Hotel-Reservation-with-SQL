@@ -2,154 +2,146 @@
     ViewData["Title"] = "Relax Hotel | Dashboard";
 }
 
-<div class="container mt-4">
 
-    <!-- Dashboard Cards -->
-    <div class="row">
-        <!-- New Booking -->
-        <div class="col-md-3">
-            <div class="card text-white shadow rounded-card" style="background-color: #0d6efd; border-radius: 10px; padding: 15px;">
-                <div class="card-body d-flex flex-column">
-                    <h2 class="fw-bold mb-1" style="font-size: 1.5rem;">259</h2>
-                    <h5 class="card-title mb-0" style="font-weight: bold; opacity: 0.8;">New Booking</h5>
-                    <div class="position-absolute" style="top: 50px; right: 20px;">
-                        <i class="fa-solid fa-bookmark" style="color: white; font-size: 2rem; opacity: 0.8;"></i>
-                    </div>
-                </div>
+@{
+    // Extract counts from ViewBag
+    int reservationCount = ViewBag.ReservationCount;
+    int roomCount = ViewBag.RoomCount;
+    int customerCount = ViewBag.CustomerCount;
+    int employeeCount = ViewBag.EmployeeCount;
+    int billingsCount = ViewBag.BillingsCount;
+    int userCount = ViewBag.UserCount;
+
+    // Analyze ReservationCount
+    string reservationMessage = reservationCount == 0 ? "No new bookings today." :
+                               reservationCount <= 10 ? "Low number of new bookings." :
+                               reservationCount <= 50 ? "Moderate number of new bookings." :
+                               "High number of new bookings!";
+
+    // Analyze RoomCount
+    string roomMessage = roomCount == 0 ? "No rooms available." :
+                         roomCount <= 20 ? "Limited rooms available." :
+                         "Sufficient rooms available.";
+
+    // Analyze CustomerCount
+    string customerMessage = customerCount == 0 ? "No customers registered." :
+                             customerCount <= 50 ? "Small customer base." :
+                             customerCount <= 200 ? "Moderate customer base." :
+                             "Large customer base!";
+
+    // Analyze EmployeeCount
+    string employeeMessage = employeeCount == 0 ? "No employees registered." :
+                             employeeCount <= 10 ? "Small team." :
+                             employeeCount <= 50 ? "Moderate team size." :
+                             "Large team!";
+
+    // Analyze BillingsCount
+    string billingsMessage = billingsCount == 0 ? "No payments processed today." :
+                             billingsCount <= 20 ? "Low number of payments processed." :
+                             billingsCount <= 100 ? "Moderate number of payments processed." :
+                             "High number of payments processed!";
+
+    // Analyze UserCount
+    string userMessage = userCount == 0 ? "No users in the system." :
+                         userCount <= 10 ? "Small number of users." :
+                         userCount <= 50 ? "Moderate number of users." :
+                         "Large number of users!";
+}
+
+<!-- Dashboard Cards -->
+<div class="row">
+    <!-- New Booking -->
+    <div class="col-md-4 mb-4">
+        <div class="card shadow">
+            <div class="card-body">
+                <h5 class="card-title">New Bookings</h5>
+                <h2 class="fw-bold">@reservationCount</h2>
+                <p class="mb-0">@reservationMessage</p>
             </div>
         </div>
-
-
-        <!-- Schedule Room -->
-        <div class="col-md-3">
-            <div class="card text-white shadow rounded-card" style="background-color: #20C997; border-radius: 10px; padding: 15px;">
-                <div class="card-body d-flex flex-column">
-                    <h2 class="fw-bold mb-1" style="font-size: 1.5rem;">259</h2>
-                    <h5 class="card-title mb-0" style="font-weight: bold; opacity: 0.8;">Schedule Room</h5>
-                    <div class="position-absolute" style="top: 50px; right: 20px;">
-                        <i class="fa-solid fa-calendar-check" style="color: white; font-size: 2rem; opacity: 0.8;"></i>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <!-- Check In -->
-        <div class="col-md-3">
-            <div class="card text-white shadow rounded-card" style="background-color: #FFC107; border-radius: 10px; padding: 15px;">
-                <div class="card-body d-flex flex-column">
-                    <h2 class="fw-bold mb-1" style="font-size: 1.5rem;">259</h2>
-                    <h5 class="card-title mb-0" style="font-weight: bold; opacity: 0.8;">Check In</h5>
-                    <div class="position-absolute" style="top: 50px; right: 20px;">
-
-                        <i class="fa-solid fa-arrow-right-to-bracket" style="color: white; font-size: 2rem; opacity: 0.8;"></i>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <!-- Check Out -->
-        <div class="col-md-3">
-            <div class="card text-white shadow rounded-card" style="background-color: #FD7E14; border-radius: 10px; padding: 15px;">
-                <div class="card-body d-flex flex-column">
-                    <h2 class="fw-bold mb-1" style="font-size: 1.5rem;">259</h2>
-                    <h5 class="card-title mb-0" style="font-weight: bold; opacity: 0.8;">Check Out</h5>
-                    <div class="position-absolute" style="top: 50px; right: 20px;">
-                        <i class="fa-solid fa-arrow-right-from-bracket" style="color: white; font-size: 2rem; opacity: 0.8;"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 
-
-    <!-- Additional Widgets (Available Room, Booking Stats, Graphs) -->
-    <div class="row mt-4">
-        <!-- Left Column: Reservation Statistics -->
-        <!-- Right Column: Available Rooms + Booking Room Today -->
-        <div class="col-md-6 d-flex flex-column gap-3">
-            <!-- Available Rooms -->
-            <div class="card shadow">
-                <div class="card-body text-center">
-                    <h5>Available Room Today</h5>
-                    <h2 class="fw-bold">785</h2>
-                    <div class="circle" style="width: 70px; height:70px; border:5px solid #1362FC; border-radius: 50%;display: flex;position:absolute; top:30px; right:50px;"></div>
-                </div>
-            </div>
-
-
-            <!-- Booking Room Today -->
-            <div class="card shadow-lg rounded-lg">
-                <div class="card-body">
-                    <h5 class="card-title text-center mb-4">Booking Room Today</h5>
-                    <div class="progress-container">
-                        <div class="progress mb-2" style="height: 20px; border-radius: 10px;">
-                            <div class="progress-bar" style="width: 75%; border-radius: 10px; background-color: #32CD32;">
-                                <span class="progress-text">75%</span>
-                            </div>
-                        </div>
-
-                        <div class="progress mb-2" style="height: 20px; border-radius: 10px;">
-                            <div class="progress-bar bg-info" style="width: 20%; border-radius: 10px;">
-                                <span class="progress-text">20%</span>
-                            </div>
-                        </div>
-                        <div class="progress mb-2" style="height: 20px; border-radius: 10px;">
-                            <div class="progress-bar" style="width: 90%; border-radius: 10px; background-color: #FF00FF;">
-                                <span class="progress-text">90%</span>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="d-flex justify-content-between mt-3">
-                        <span class="legend d-flex align-items-center">
-                            <span class="dot bg-success mr-2"></span> Pending <strong>265</strong>
-                        </span>
-                        <span class="legend d-flex align-items-center">
-                            <span class="dot bg-info mr-2"></span> Done <strong>65</strong>
-                        </span>
-                        <span class="legend d-flex align-items-center">
-                            <span class="dot bg-purple mr-2"></span> Finished <strong>782</strong>
-                        </span>
-                    </div>
-                </div>
+    <!-- Total Rooms -->
+    <div class="col-md-4 mb-4">
+        <div class="card shadow">
+            <div class="card-body">
+                <h5 class="card-title">Total Rooms</h5>
+                <h2 class="fw-bold">@roomCount</h2>
+                <p class="mb-0">@roomMessage</p>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="card shadow">
-                <div class="card-body">
-                    <div class="d-flex align-items-center gap-2">
-                        <span class="fs-5">Reservation Statistic</span>
-                        <span class="fw-bold fs-5">455</span>
-                        <span class="text-secondary">Check In</span>
-                        <span class="fw-bold fs-5">321</span>
-                        <span class="text-secondary">Check Out</span>
-                    </div>
-                    <section class="charts">
-                        <!-- Line Chart Container -->
-                        <div class="chart-container">
-                            <canvas id="lineChart"></canvas>
-                        </div>
-                    </section>
+    </div>
 
-                </div>
+    <!-- Customers -->
+    <div class="col-md-4 mb-4">
+        <div class="card shadow">
+            <div class="card-body">
+                <h5 class="card-title">Customers</h5>
+                <h2 class="fw-bold">@customerCount</h2>
+                <p class="mb-0">@customerMessage</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Employees -->
+    <div class="col-md-4 mb-4">
+        <div class="card shadow">
+            <div class="card-body">
+                <h5 class="card-title">Employees</h5>
+                <h2 class="fw-bold">@employeeCount</h2>
+                <p class="mb-0">@employeeMessage</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payments -->
+    <div class="col-md-4 mb-4">
+        <div class="card shadow">
+            <div class="card-body">
+                <h5 class="card-title">Payments</h5>
+                <h2 class="fw-bold">@billingsCount</h2>
+                <p class="mb-0">@billingsMessage</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Users -->
+    <div class="col-md-4 mb-4">
+        <div class="card shadow">
+            <div class="card-body">
+                <h5 class="card-title">Users</h5>
+                <h2 class="fw-bold">@userCount</h2>
+                <p class="mb-0">@userMessage</p>
             </div>
         </div>
     </div>
 </div>
-<style>
 
-</style>
-
+<!-- Reservation Statistics with Line Chart -->
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="fs-5">Reservation Statistic</span>
+                    <span class="fw-bold fs-5">@ViewBag.CheckInCount</span>
+                    <span class="text-secondary">Check In</span>
+                    <span class="fw-bold fs-5">@ViewBag.CheckOutCount</span>
+                    <span class="text-secondary">Check Out</span>
+                </div>
+                <section class="charts">
+                    <div class="chart-container">
+                        <canvas id="lineChart"></canvas>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Chart.js for Graphs -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-
     document.addEventListener('DOMContentLoaded', () => {
         // Initialize Line Chart
         const lineCtx = document.getElementById('lineChart').getContext('2d');
@@ -160,7 +152,7 @@
                 datasets: [
                     {
                         label: 'Check In', // Dataset label
-                        data: [120, 190, 300, 500, 200, 300, 234, 320, 305, 450], // Data points
+                        data: [@ViewBag.CheckInDay1, @ViewBag.CheckInDay2, @ViewBag.CheckInDay3, @ViewBag.CheckInDay4, @ViewBag.CheckInDay5, @ViewBag.CheckInDay6, @ViewBag.CheckInDay7, @ViewBag.CheckInDay8, @ViewBag.CheckInDay9, @ViewBag.CheckInDay10], // Data points from ViewBag
                         backgroundColor: 'rgba(74, 144, 226, 0.2)', // Fill color below the line
                         borderColor: 'rgba(74, 144, 226, 1)', // Line color
                         borderWidth: 2, // Line width
@@ -168,7 +160,7 @@
                     },
                     {
                         label: 'Check Out', // Dataset label
-                        data: [150, 230, 270, 400, 150, 350, 400, 450, 250, 400], // Data points
+                        data: [@ViewBag.CheckOutDay1, @ViewBag.CheckOutDay2, @ViewBag.CheckOutDay3, @ViewBag.CheckOutDay4, @ViewBag.CheckOutDay5, @ViewBag.CheckOutDay6, @ViewBag.CheckOutDay7, @ViewBag.CheckOutDay8, @ViewBag.CheckOutDay9, @ViewBag.CheckOutDay10], // Data points from ViewBag
                         backgroundColor: 'rgba(255, 159, 64, 0.2)', // Fill color below the line
                         borderColor: 'rgba(255, 159, 64, 1)', // Line color
                         borderWidth: 2, // Line width
@@ -198,6 +190,4 @@
             }
         });
     });
-
-
 </script>

@@ -87,26 +87,56 @@ namespace Hotel_Reservation.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Room room, IFormFile? pictureFile)
         {
-            if (id != room.RoomID) return NotFound();
+            if (id != room.RoomID)
+                return NotFound();
+
+            // Get existing room from database
+            var existingRoom = await _context.Room.FindAsync(id);
+            if (existingRoom == null)
+                return NotFound();
+
+            // Store existing image path before any updates
+            var existingImagePath = existingRoom.Pictures;
 
             if (ModelState.IsValid)
             {
                 try
                 {
+                    // Update scalar properties (excluding image)
+                    _context.Entry(existingRoom).CurrentValues.SetValues(room);
+
+                    // Handle image upload
                     if (pictureFile != null)
                     {
-                        string fileName = $"{Guid.NewGuid()}_{pictureFile.FileName}";
-                        string uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", fileName);
-
-                        using (var fileStream = new FileStream(uploadPath, FileMode.Create))
+                        // Delete old image if it exists
+                        if (!string.IsNullOrEmpty(existingImagePath))
                         {
-                            await pictureFile.CopyToAsync(fileStream);
+                            var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath,
+                                                           existingImagePath.TrimStart('/'));
+                            if (System.IO.File.Exists(oldImagePath))
+                            {
+                                System.IO.File.Delete(oldImagePath);
+                            }
                         }
 
-                        room.Pictures = $"/uploads/{fileName}";
+                        // Save new image
+                        var fileName = $"{Guid.NewGuid()}_{pictureFile.FileName}";
+                        var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", fileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await pictureFile.CopyToAsync(stream);
+                        }
+
+                        existingRoom.Pictures = $"/uploads/{fileName}";
+                    }
+                    else
+                    {
+                        // Retain existing image
+                        existingRoom.Pictures = existingImagePath;
                     }
 
-                    _context.Update(room);
+                    // Save changes
                     await _context.SaveChangesAsync();
 
                     TempData["SuccessMessage"] = "Room updated successfully!";
@@ -116,17 +146,17 @@ namespace Hotel_Reservation.Controllers
                 {
                     if (!_context.Room.Any(e => e.RoomID == id))
                         return NotFound();
-
                     throw;
                 }
                 catch (Exception ex)
                 {
-                    // Log the exception (ex) here
+                    // Log error (ex)
                     ModelState.AddModelError("", "An error occurred while updating the room.");
                 }
             }
 
-            return View(room);
+            // Repopulate model with existing values if validation fails
+            return View(existingRoom);
         }
 
         // GET: Room/Delete/5
