@@ -146,6 +146,7 @@ namespace Hotel_Reservation.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+
             var appUser = await _context.AppUser.FindAsync(id);
             if (appUser != null)
             {

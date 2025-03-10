@@ -39,13 +39,18 @@
                                 <td class="text-center">
                                     @if (!string.IsNullOrEmpty(item.Pictures))
                                     {
-                                        <img src="@Url.Content(item.Pictures)" width="50" height="50"
-                                             class="rounded-circle border" style="object-fit: cover;" alt="User Picture" />
+                                        <img src="@Url.Content(item.Pictures)?v=@DateTime.Now.Ticks"
+                                             width="50" height="50"
+                                             class="rounded-circle border"
+                                             style="object-fit: cover;"
+                                             alt="User Picture" />
                                     }
                                     else
                                     {
-                                        <img src="/img/default-img.png" width="50" height="50"
-                                             class="rounded-circle border" style="object-fit: cover;"
+                                        <img src="/img/default-img.png"
+                                             width="50" height="50"
+                                             class="rounded-circle border"
+                                             style="object-fit: cover;"
                                              alt="Default Picture" />
                                     }
                                 </td>
@@ -53,12 +58,13 @@
                                 <td>@item.Email</td>
                                 <td>@item.Role</td>
                                 <td class="text-center">
-
-                                    <a asp-action="Edit" asp-route-id="@item.AppUserID" class="btn btn-primary btn-sm me-2">
+                                    <button type="button"
+                                            class="btn btn-primary btn-sm me-2"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="@("#EditUser-" + item.AppUserID)">
                                         <i class="bi bi-pencil-square"></i>
-
-                                    </a>
-
+                                    </button>
+                                    @await Html.PartialAsync("_EditUser", item)
 
                                     <button type="button" class="btn btn-info btn-sm me-2" data-bs-toggle="modal"
                                             data-bs-target="@("#DetailUser-" + item.AppUserID)"

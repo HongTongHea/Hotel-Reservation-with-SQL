@@ -29,6 +29,7 @@ namespace Hotel_Reservation.Controllers
                 FullName = c.FirstName + " " + c.LastName
             }), "CustomerID", "FullName");
             ViewBag.Rooms = new SelectList(_context.Room, "RoomID", "RoomNumber");
+            ViewBag.Services = new SelectList(_context.Services, "ServiceID", "ServiceName");
             ViewBag.Reservations = new SelectList(_context.Reservation.Select(r => new
             {
                 ReservationID = r.ReservationID,
@@ -48,6 +49,7 @@ namespace Hotel_Reservation.Controllers
                 FullName = c.FirstName + " " + c.LastName
             }), "CustomerID", "FullName");
             ViewBag.Rooms = new SelectList(_context.Room, "RoomID", "RoomNumber");
+            ViewBag.Services = new SelectList(_context.Services, "ServiceID", "ServiceName");
             ViewBag.Reservations = new SelectList(_context.Reservation.Select(r => new
             {
                 ReservationID = r.ReservationID,

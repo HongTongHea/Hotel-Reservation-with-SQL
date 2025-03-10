@@ -26,15 +26,15 @@
                             <div class="col-md-12 form-group">
                                 <label asp-for="Email" class="form-label">Email</label>
                                 <span asp-validation-for="Email" class="text-danger"></span>
-                                <input asp-for="Email" class="form-control" placeholder="Insert Email" />
+                                <input asp-for="Email" class="form-control" placeholder="Email" />
 
                             </div>
 
                             <!-- Password -->
                             <div class="col-md-12 form-group">
-                                <label asp-for="Password" class="form-label">Code Number</label>
+                                <label asp-for="Password" class="form-label">Password</label>
                                 <span asp-validation-for="Password" class="text-danger"></span>
-                                <input asp-for="Password" type="password" class="form-control" placeholder="Insert Code Number" />
+                                <input asp-for="Password" type="password" class="form-control" placeholder="Password" />
 
                             </div>
 
@@ -73,14 +73,13 @@
                         <!-- Upload Picture -->
                         <div class="col-6">
                             <div class="col-md-12 form-group">
-                                <label for="pictureFile" class="form-label">Select Picture</label>
-                                <input type="file" name="pictureFile" id="pictureFile" class="form-control d-none" accept="image/*" onchange="showPreview(event)" />
-                                <div id="preview" onclick="triggerFileInput()" style="cursor: pointer;">
+                                <label for="pictureFileCreate" class="form-label">Select Picture</label>
+                                <input type="file" name="pictureFile" id="pictureFileCreate" class="form-control d-none" accept="image/*" onchange="showPreview(event, 'previewCreate')" />
+                                <div id="previewCreate" onclick="triggerFileInput('pictureFileCreate')" style="cursor: pointer;">
                                     <img src="/img/default-img.png" alt="Default Image" class="img-thumbnail" style="width: 350px; height: 350px; object-fit: cover;" />
                                 </div>
                             </div>
                         </div>
-
 
                     </div>
 
@@ -102,14 +101,15 @@
 </div>
 
 <script>
-    function triggerFileInput() {
-        document.getElementById('pictureFile').click();
+    function triggerFileInput(inputId) {
+        document.getElementById(inputId).click();
     }
 
-    function showPreview(event) {
+    function showPreview(event, previewId) {
         var file = event.target.files[0];
         var reader = new FileReader();
-        var output = document.getElementById('preview').getElementsByTagName('img')[0];
+        var output = document.getElementById(previewId).getElementsByTagName('img')[0];
+
         if (file) {
             reader.onload = function () {
                 output.src = reader.result;

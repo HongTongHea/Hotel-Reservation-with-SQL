@@ -93,20 +93,36 @@ namespace Hotel_Reservation.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(10, 2)");
 
-                    b.Property<DateTime>("PaymentDate")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("PaymentMethod")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("ReservationID")
                         .HasColumnType("int");
 
+                    b.Property<int>("RoomId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServiceID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("BillingID");
 
+                    b.HasIndex("CustomerId");
+
                     b.HasIndex("ReservationID");
+
+                    b.HasIndex("RoomId");
+
+                    b.HasIndex("ServiceID");
 
                     b.ToTable("Billing");
                 });
@@ -301,6 +317,23 @@ namespace Hotel_Reservation.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ServiceID"));
 
+                    b.Property<string>("Category")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int?>("DurationInMinutes")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ServiceName")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -308,6 +341,9 @@ namespace Hotel_Reservation.Migrations
 
                     b.Property<decimal>("ServiceRate")
                         .HasColumnType("decimal(10, 2)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("ServiceID");
 
@@ -327,13 +363,37 @@ namespace Hotel_Reservation.Migrations
 
             modelBuilder.Entity("Hotel_Reservation.Models.Billing", b =>
                 {
+                    b.HasOne("Hotel_Reservation.Models.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Hotel_Reservation.Models.Reservation", "Reservation")
                         .WithMany("Billings")
                         .HasForeignKey("ReservationID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Hotel_Reservation.Models.Room", "Room")
+                        .WithMany()
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Hotel_Reservation.Models.Services", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
                     b.Navigation("Reservation");
+
+                    b.Navigation("Room");
+
+                    b.Navigation("Service");
                 });
 
             modelBuilder.Entity("Hotel_Reservation.Models.Reservation", b =>

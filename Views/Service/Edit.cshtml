@@ -1,0 +1,79 @@
+﻿@model Services
+@{
+    ViewData["Title"] = "Relax Hotel | Edit Employee";
+}
+<div class="modal fade" id="Edit-@Model.ServiceID" tabindex="-1" aria-labelledby="EditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <div class="d-flex align-items-center justify-content-center">
+                    <img src="~/img/logo-hotel-bg.png" width="40px" />
+                    <h5 class="ms-2">@ViewData["Title"]</h5>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-start fw-bold">
+                <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="ServiceID" />
+                    <div class="row fw-bold">
+                        <div class="col-12 col-md-6 form-group">
+                            <label asp-for="ServiceName">Service Name</label>
+                            <span asp-validation-for="ServiceName" class="text-danger"></span>
+                            <input asp-for="ServiceName" type="text" class="form-control" placeholder="Insert ServiceName" />
+                        </div>
+                        <div class="col-12 col-md-6 form-group">
+                            <label asp-for="ServiceRate">Service Rate</label>
+                            <span asp-validation-for="ServiceRate" class="text-danger"></span>
+                            <input asp-for="ServiceRate" type="number" class="form-control" placeholder="Insert ServiceRate" />
+                        </div>
+                        <div class="col-12 col-md-6 form-group">
+                            <label asp-for="Category">Category</label>
+                            <span asp-validation-for="Category" class="text-danger"></span>
+                            <select asp-for="Category" class="form-control form-select">
+                                <option value="" disabled selected>Select Category</option>
+                                <option value="Food&Drink">Food & Drink</option>
+                                <option value="SpaTreatment">
+                                    Spa Treatment
+                                </option>
+                                <option value="RoomCleaning">Room Cleaning</option>
+                                <option value="LaundryService">Laundry Service</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-6 form-group">
+                            <label asp-for="DurationInMinutes" class="form-label">DurationInMinutes</label>
+                            <span asp-validation-for="DurationInMinutes" class="text-danger"></span>
+                            <input asp-for="DurationInMinutes" type="text" class="form-control" placeholder="Insert DurationInMinutes" />
+                        </div>
+                        <div class="col-12 col-md-6 form-group">
+                            <div class="form-group mb-3 d-flex align-items-start flex-column justify-content-start">
+                                <div>
+                                    <label asp-for="IsAvailable" class="form-label mb-0">Is Active</label>
+                                </div>
+                                <div class="form-check mb-4">
+                                    <input asp-for="IsAvailable" class="form-check-input" type="checkbox" style="width: 1.5rem; height: 1.5rem;" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 form-group">
+                            <label asp-for="Description">Description</label>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                            <input asp-for="Description" type="text" class="form-control" placeholder="Description" />
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Save
+                        </button>
+
+                        <a class="btn btn-secondary text-white" data-bs-dismiss="modal">
+                            <i class="fas fa-times"></i> Close
+                        </a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

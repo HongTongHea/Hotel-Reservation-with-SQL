@@ -1,0 +1,32 @@
+﻿@model Services
+@{
+    ViewData["Title"] = "Relax Hotel | Service Detail";
+}
+
+<div class="modal fade" id="Detail-@Model.ServiceID" tabindex="-1" aria-labelledby="DetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog text-black">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <div class="d-flex align-items-center justify-content-center">
+                    <img src="~/img/logo-hotel-bg.png" width="40px" />
+                    <h5 class="ms-2">@ViewData["Title"]</h5>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-4">
+                    <div class="col-md-12 text-start">
+                        <p class="mb-3"><strong>Service Name: </strong>@Model.ServiceName</p>
+                        <p class="mb-3"><strong>Service Rate: </strong>Model.ServiceRate</p>
+                        <p class="mb-3"><strong>Category: </strong>@Model.Category</p>
+                        <p class="mb-3"><strong>DurationInMinutes: </strong>@Model.DurationInMinutes</p>
+                        <p class="mb-3"><strong>Description: </strong>@Model.Description</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"> <i class="fas fa-times"></i> Close</button>
+            </div>
+        </div>
+    </div>
+</div>

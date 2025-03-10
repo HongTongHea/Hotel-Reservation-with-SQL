@@ -86,7 +86,7 @@ namespace Hotel_Reservation.Controllers
             // Sign out the user
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            TempData["SuccessMessage"] = "You have successfully logged out.";
+            TempData["SuccessMessage"] = "Successfully logged out.";
 
             return RedirectToAction("Login", "Account");
         }

@@ -19,17 +19,23 @@ namespace Hotel_Reservation.Models
         [Required]
         public int RoomId { get; set; }
 
+        [ForeignKey("Service")]
+        [Required]
+        public int ServiceID { get; set; }
+
         [Required]
         [Column(TypeName = "decimal(10, 2)")]
         public decimal Amount { get; set; }
 
         public DateTime StartDate { get; set; } = DateTime.Now;
-        public DateTime EndDate { get; set; } = DateTime .Now;
+        public DateTime EndDate { get; set; } = DateTime.Now;
 
         public string? Status { get; set; }
 
-        public virtual Customer? Customer { get; set; }  
+        public virtual Customer? Customer { get; set; }
         public virtual Room? Room { get; set; }
+        public virtual Reservation? Reservation { get; set; }
+        public virtual Services? Service { get; set; }
 
 
     }
