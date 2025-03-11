@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Relax Hotel | Information Rooms";
 }
+
 <div class="card mb-3">
     <div class="card-header bg-dark text-white">
         <div class="d-flex align-items-center justify-content-center">
@@ -10,39 +11,59 @@
             <h5 class="ms-2">@ViewData["Title"]</h5>
         </div>
     </div>
-    <div class="card-body ">
-        <div class="mb-3">
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#AddRoom">
-                <i class="fa-solid fa-circle-plus"></i> Add New
-            </button>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col-12 col-md-6">
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#AddRoom">
+                    <i class="fa-solid fa-circle-plus"></i> Add New
+                </button>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <div class="input-group">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search rooms...">
+                    <span class="input-group-text">
+                        <i class="fas fa-search"></i>
+                    </span>
+                </div>
+            </div>
         </div>
-        <div class="row">
+
+        <div id="roomCardsContainer" class="row">
             @if (Model.Any())
             {
                 foreach (var item in Model)
                 {
-                    <div class="col-md-4 mb-4">
-                        <div class="card">
+                    <div class="col-md-4 mb-4 room-card">
+                        <div class="card h-100">
                             <div class="card-header bg-dark text-white text-center">
-                                Room Number: ​​​@item.RoomNumber
+                                Room Number: @item.RoomNumber
                             </div>
                             <div class="card-body text-center">
                                 @if (!string.IsNullOrEmpty(item.Pictures))
                                 {
-                                    <img src="@Url.Content(item.Pictures)" class="card-img-top img-thumbnail mb-2 room-picture" alt="Room Picture" style="width: 350px; height: 200px; object-fit: cover;" />
+                                    <img src="@Url.Content(item.Pictures)"
+                                         class="card-img-top img-thumbnail mb-2 room-picture"
+                                         alt="Room Picture"
+                                         style="width: 100%; height: 200px; object-fit: cover;" />
                                 }
                                 else
                                 {
-                                    <img src="/img/default-img.png" class="card-img-top img-thumbnail mb-2 room-picture" alt="Default Picture" style="width: 350px; height: 200px; object-fit: cover;" />
+                                    <img src="/img/default-img.png"
+                                         class="card-img-top img-thumbnail mb-2 room-picture"
+                                         alt="Default Picture"
+                                         style="width: 100%; height: 200px; object-fit: cover;" />
                                 }
 
-                                <h5 class="card-title">​<strong>Type of Rooms​​</strong> ​​​@item.RoomType Room</h5>
+                                <h5 class="card-title">
+                                    <strong>Type:</strong> @item.RoomType
+                                </h5>
                                 <p class="card-text text-start">
-                                    <strong>Status of Rooms:</strong> @item.AvailabilityStatus <br>
-                                    <strong>Room of Floor:</strong> @item.Floor <br>
-                                    <strong>Bed:</strong> @item.BedCount <br>
-                                    <strong>Room Price:</strong> $@item.RoomPrice <br>
-                                    <strong>Description:</strong> @item.Description
+                                    <strong>Status:</strong> @item.AvailabilityStatus<br>
+                                    <strong>Floor:</strong> @item.Floor<br>
+                                    <strong>Beds:</strong> @item.BedCount<br>
+                                    <strong>Price:</strong> $@item.RoomPrice<br>
+                                    <strong>Description:</strong> @item.Description D/A
                                 </p>
                             </div>
                             <div class="card-footer text-end">
@@ -54,8 +75,9 @@
                                 </button>
                                 @await Html.PartialAsync("Edit", item)
                                 <form asp-action="Delete" asp-route-id="@item.RoomID" method="post" class="d-inline">
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this room?');">
-                                        <i class="bi bi-trash-fill"></i> 
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Are you sure you want to delete this room?');">
+                                        <i class="bi bi-trash-fill"></i>
                                     </button>
                                 </form>
                             </div>
@@ -66,36 +88,65 @@
             else
             {
                 <div class="col-12">
-                    <div class="text-center">
+                    <div class="alert alert-info text-center" role="alert">
                         No rooms found.
                     </div>
                 </div>
             }
         </div>
+        <div id="noResults" class="alert alert-white d-none text-center text-black mt-4" role="alert">
+            No matching rooms found.
+        </div>
     </div>
 </div>
 
-
 @await Html.PartialAsync("_CreateRoom", new Room())
 
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 @section Scripts {
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-    <script src="~/js/DataTable.js"></script>
-    @if (TempData["ShowCreateModal"] != null && (bool)TempData["ShowCreateModal"])
-    {
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $('#AddRoom').modal('show');
-            });
-        </script>
-    }
+
     <script>
         $(document).ready(function () {
+            // Search functionality
+            $('#searchInput').on('input', function () {
+                const searchTerm = $(this).val().trim().toLowerCase();
+                const $cards = $('.room-card');
+                let resultsCount = 0;
+
+                $cards.each(function () {
+                    const roomNumber = $(this).find('.card-header').text().toLowerCase();
+                    const roomType = $(this).find('.card-title').text().toLowerCase();
+                    const roomInfo = $(this).find('.card-text').text().toLowerCase();
+
+                    const matches =
+                        roomNumber.includes(searchTerm) ||
+                        roomType.includes(searchTerm) ||
+                        roomInfo.includes(searchTerm);
+
+                    if (matches) {
+                        $(this).show();
+                        resultsCount++;
+                    } else {
+                        $(this).hide();
+                    }
+                });
+
+                // Handle no results message
+                if (searchTerm === '') {
+                    $('#noResults').addClass('d-none');
+                } else {
+                    if (resultsCount === 0) {
+                        $('#noResults').removeClass('d-none');
+                    } else {
+                        $('#noResults').addClass('d-none');
+                    }
+                }
+            });
+
+            // Success message handling
             var successMessage = '@TempData["SuccessMessage"]';
             if (successMessage) {
                 Swal.fire({
@@ -104,6 +155,14 @@
                     text: successMessage,
                 });
             }
-        });
+
+            // Show create modal if needed
+        @if (TempData["ShowCreateModal"] != null && (bool)TempData["ShowCreateModal"])
+        {
+            <text>
+                    $('#AddRoom').modal('show');
+            </text>
+        }
+                });
     </script>
 }

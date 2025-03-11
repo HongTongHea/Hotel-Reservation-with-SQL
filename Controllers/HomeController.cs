@@ -32,7 +32,7 @@ namespace Hotel_Reservation.Controllers
             int employeeCount = await _context.Employee.CountAsync();
             int billingsCount = await _context.Billing.CountAsync();
             int userCount = await _context.AppUser.CountAsync();
-
+            decimal totalBillingAmount = await _context.Billing.SumAsync(b => (decimal?)b.Amount) ?? 0;
             // Pass the count to the view using ViewBag
             ViewBag.ReservationCount = reservationCount;
             ViewBag.RoomCount = roomCount;
@@ -40,6 +40,7 @@ namespace Hotel_Reservation.Controllers
             ViewBag.EmployeeCount = employeeCount;
             ViewBag.BillingsCount = billingsCount;
             ViewBag.UserCount = userCount;
+            ViewBag.TotalBillingAmount = totalBillingAmount;
 
             ViewBag.CheckInCount = 455; // Total check-ins
             ViewBag.CheckOutCount = 321; // Total check-outs
