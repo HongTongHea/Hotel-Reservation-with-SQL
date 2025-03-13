@@ -28,10 +28,11 @@
                         <div class="col-md-12 text-start">
                             <table class="table table-borderless">
                                 <tbody>
-                                    <tr><td><strong>Billing ID:</strong></td><td>@Model.BillingID</td></tr>
-                                    <tr><td><strong>Reservation ID:</strong></td><td>@Model.ReservationID</td></tr>
+                                    <tr><td><strong>Billing No:</strong></td><td>@Model.BillingID</td></tr>
+                                    <tr><td><strong>Reservation:</strong></td><td>@Model.ReservationID</td></tr>
                                     <tr><td><strong>Customer Name:</strong></td><td>@Model.Customer.FirstName @Model.Customer.LastName</td></tr>
-                                    <tr><td><strong>Room ID:</strong></td><td>@Model.Room.RoomNumber</td></tr>
+                                    <tr><td><strong>Room:</strong></td><td>@Model.Room.RoomNumber</td></tr>
+                                    <tr><td><strong>Servicce:</strong></td><td>@Model.Service.ServiceName</td></tr>
                                     <tr><td><strong>Amount:</strong></td><td>$@Model.Amount</td></tr>
                                     <tr><td><strong>Check In:</strong></td><td>@Model.StartDate.ToString("yyyy-MM-dd")</td></tr>
                                     <tr><td><strong>Check Out:</strong></td><td>@Model.EndDate.ToString("yyyy-MM-dd")</td></tr>

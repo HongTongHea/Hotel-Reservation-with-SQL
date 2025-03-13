@@ -1,5 +1,6 @@
 ﻿$(document).ready(function () {
     $('#DataTable').DataTable({
+        destroy: true,
         paging: true,      
         searching: true,    
         ordering: false,   

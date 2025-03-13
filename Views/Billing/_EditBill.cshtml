@@ -1,4 +1,5 @@
-﻿@model Billing
+﻿
+@model Billing
 @{
     ViewData["Title"] = "Relax Hotel | Edit Billing";
 }
@@ -13,16 +14,20 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-start fw-bold">
-                <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                <form asp-action="Edit" method="post">
                     <input type="hidden" asp-for="BillingID" />
+
                     <div class="row fw-bold">
+                        <!-- Reservation Dropdown -->
                         <div class="col-12 col-md-6 form-group">
                             <label asp-for="ReservationID" class="form-label"></label>
-                            <select asp-for="ReservationID" asp-items="ViewBag.Reservations" class="form-control">
+                            <select asp-for="ReservationID" asp-items="ViewBag.Reservations" class="form-control reservationDropdown">
                                 <option value="">Select a Reservation</option>
                             </select>
                             <span asp-validation-for="ReservationID" class="text-danger"></span>
                         </div>
+
+                        <!-- Customer Dropdown -->
                         <div class="col-12 col-md-6 form-group">
                             <label asp-for="CustomerId" class="form-label"></label>
                             <select asp-for="CustomerId" asp-items="ViewBag.Customers" class="form-control">
@@ -30,40 +35,51 @@
                             </select>
                             <span asp-validation-for="CustomerId" class="text-danger"></span>
                         </div>
+
+                        <!-- Room Dropdown -->
                         <div class="col-12 col-md-6 form-group">
                             <label asp-for="RoomId" class="form-label"></label>
                             <select asp-for="RoomId" asp-items="ViewBag.Rooms" class="form-control">
-                                <option value="" disabled selected>Select Rooms</option>
+                                <option value="" disabled selected>Select Room</option>
                             </select>
                             <span asp-validation-for="RoomId" class="text-danger"></span>
                         </div>
+
+                        <!-- Services Dropdown -->
                         <div class="col-12 col-md-6 form-group">
                             <label asp-for="ServiceID" class="form-label"></label>
-                            <select asp-for="ServiceID" asp-items="ViewBag.Services" class="form-control">
-                                <option value="" disabled selected>Select Services</option>
+                            <select asp-for="ServiceID" asp-items="ViewBag.Services" class="form-control serviceDropdown">
+                                <option value="" disabled selected>Select Service</option>
                             </select>
-                            <span asp-validation-for="RoomId" class="text-danger"></span>
+                            <span asp-validation-for="ServiceID" class="text-danger"></span>
                         </div>
-                       
+
+                        <!-- Start Date -->
                         <div class="col-12 col-md-6 form-group">
                             <label asp-for="StartDate" class="form-label"></label>
                             <input asp-for="StartDate" class="form-control" type="date" />
                             <span asp-validation-for="StartDate" class="text-danger"></span>
                         </div>
+
+                        <!-- End Date -->
                         <div class="col-12 col-md-6 form-group">
                             <label asp-for="EndDate" class="form-label"></label>
                             <input asp-for="EndDate" class="form-control" type="date" />
                             <span asp-validation-for="EndDate" class="text-danger"></span>
                         </div>
+
+                        <!-- Amount Field (Automatically Calculated) -->
                         <div class="col-12 col-md-6 form-group">
                             <label asp-for="Amount" class="form-label"></label>
-                            <input asp-for="Amount" class="form-control" />
+                            <input asp-for="Amount" class="form-control amount" readonly />
                             <span asp-validation-for="Amount" class="text-danger"></span>
                         </div>
+
+                        <!-- Payment Status Dropdown -->
                         <div class="col-12 col-md-6 form-group">
                             <label asp-for="Status" class="form-label"></label>
                             <select asp-for="Status" class="form-select form-control">
-                                <option value="">Select Status Payment</option>
+                                <option value="">Select Payment Status</option>
                                 <option value="Unpaid">Unpaid</option>
                                 <option value="Paid">Paid</option>
                                 <option value="Complete">Complete</option>
@@ -71,6 +87,7 @@
                             <span asp-validation-for="Status" class="text-danger"></span>
                         </div>
                     </div>
+
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-save"></i> Save
@@ -85,3 +102,48 @@
         </div>
     </div>
 </div>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".reservationDropdown, .serviceDropdown").change(function () {
+            var form = $(this).closest("form");
+            var reservationId = form.find(".reservationDropdown").val();
+            var serviceId = form.find(".serviceDropdown").val();
+            var amountField = form.find(".amount");
+            var totalPrice = 0;
+            var serviceRate = 0;
+
+            if (reservationId) {
+                $.ajax({
+                    url: "/Billing/GetReservationTotalPrice",
+                    type: "GET",
+                    data: { id: reservationId },
+                    success: function (data) {
+                        totalPrice = parseFloat(data) || 0;
+                        updateFinalAmount();
+                    }
+                });
+            }
+
+            if (serviceId) {
+                $.ajax({
+                    url: "/Billing/GetServiceRate",
+                    type: "GET",
+                    data: { id: serviceId },
+                    success: function (data) {
+                        serviceRate = parseFloat(data) || 0;
+                        updateFinalAmount();
+                    }
+                });
+            }
+
+            function updateFinalAmount() {
+                var finalAmount = totalPrice + serviceRate;
+                amountField.val(finalAmount.toFixed(2));
+            }
+        });
+    });
+
+</script>

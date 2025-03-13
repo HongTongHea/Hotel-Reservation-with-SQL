@@ -46,7 +46,7 @@
                role="button" data-toggle="dropdown"
                aria-haspopup="true" aria-expanded="false">
                 <img class="img-profile rounded-circle" src="@User.FindFirst("Pictures")?.Value"
-                     style="max-width: 60px">
+                     style="max-width: 60px; object-fit:cover; object-position:center;" >
                 <span class="ml-2 d-none d-lg-inline text-white small">
                     @User.Identity.Name
                 </span>

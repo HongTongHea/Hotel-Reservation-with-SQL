@@ -7,43 +7,61 @@
 <form asp-action="Edit" method="post" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="ReservationID" />
-    <div class="row">
-        <div class="form-group col-12 col-md-6">
-            <label asp-for="CustomerID" class="control-label"></label>
-            <select asp-for="CustomerID" class="form-control" asp-items="ViewBag.Customers"></select>
+    <div class="row fw-bold">
+        <div class="col-12 col-md-6 form-group">
+            <label asp-for="CustomerID">Customer</label>
+            <select asp-for="CustomerID" asp-items="ViewBag.Customers" class="form-control">
+                <option value="" disabled selected>Select Customer</option>
+            </select>
+            <span asp-validation-for="CustomerID" class="text-danger"></span>
         </div>
-        <div class="form-group col-12 col-md-6">
-            <label asp-for="RoomID" class="control-label"></label>
-            <select asp-for="RoomID" class="form-control" asp-items="ViewBag.Rooms"></select>
+
+        <div class="col-12 col-md-6 form-group">
+            <label asp-for="RoomID">Rooms</label>
+            <select id="RoomID_Edit" asp-for="RoomID" asp-items="ViewBag.Rooms" class="form-control">
+                <option value="" disabled selected>Select Rooms</option>
+            </select>
+            <span asp-validation-for="RoomID" class="text-danger"></span>
         </div>
-        <div class="form-group col-12 col-md-6">
-            <label asp-for="CheckInDate" class="control-label"></label>
-            <input asp-for="CheckInDate" class="form-control" />
+
+        <div class="col-12 col-md-6 form-group">
+            <label asp-for="CheckInDate">Check In</label>
+            <input id="CheckInDate_Edit" asp-for="CheckInDate" class="form-control" type="date" />
             <span asp-validation-for="CheckInDate" class="text-danger"></span>
         </div>
-        <div class="form-group col-12 col-md-6">
-            <label asp-for="CheckOutDate" class="control-label"></label>
-            <input asp-for="CheckOutDate" class="form-control" />
+
+        <div class="col-12 col-md-6 form-group">
+            <label asp-for="CheckOutDate">Check Out</label>
+            <input id="CheckOutDate_Edit" asp-for="CheckOutDate" class="form-control" type="date" />
             <span asp-validation-for="CheckOutDate" class="text-danger"></span>
         </div>
-        <div class="form-group col-12 col-md-6">
-            <label asp-for="NumberOfChildren" class="control-label"></label>
-            <input asp-for="NumberOfChildren" class="form-control" />
+
+        <div class="col-12 col-md-6 form-group">
+            <label asp-for="NumberOfChildren">Children</label>
+            <input asp-for="NumberOfChildren" type="number" class="form-control" placeholder="Insert Children" />
             <span asp-validation-for="NumberOfChildren" class="text-danger"></span>
         </div>
-        <div class="form-group col-12 col-md-6">
-            <label asp-for="NumberOfAdults" class="control-label"></label>
-            <input asp-for="NumberOfAdults" class="form-control" />
+
+        <div class="col-12 col-md-6 form-group">
+            <label asp-for="NumberOfAdults">Person</label>
+            <input asp-for="NumberOfAdults" type="number" class="form-control" placeholder="Insert Person" />
             <span asp-validation-for="NumberOfAdults" class="text-danger"></span>
         </div>
-        <div class="form-group col-12 col-md-6">
-            <label asp-for="TotalPrice" class="control-label"></label>
-            <input asp-for="TotalPrice" class="form-control" />
+
+        <div class="col-12 col-md-6 form-group">
+            <label asp-for="TotalPrice">Total Price</label>
+            <input id="TotalPrice_Edit" asp-for="TotalPrice" type="text" class="form-control" placeholder="Insert Total Price" readonly />
             <span asp-validation-for="TotalPrice" class="text-danger"></span>
         </div>
-        <div class="form-group col-12 col-md-6">
-            <label asp-for="PaymentStatus" class="control-label"></label>
-            <input asp-for="PaymentStatus" class="form-control" />
+
+        <div class="col-12 col-md-6 form-group">
+            <label asp-for="PaymentStatus">Status Payment</label>
+            <select asp-for="PaymentStatus" class="form-control form-select">
+                <option value="" disabled selected>Select Status Payment</option>
+                <option value="Pending">Pending</option>
+                <option value="Paid">Paid</option>
+                <option value="Cancelled">Cancelled</option>
+            </select>
             <span asp-validation-for="PaymentStatus" class="text-danger"></span>
         </div>
     </div>
@@ -66,6 +84,72 @@
         </button>
     </form>
 </div>
-@*      <a asp-action="Delete" asp-route-id="@Model.ReservationID" class="btn btn-danger btn-sm">
-            <i class="fas fa-trash"></i> Delete
-        </a> *@
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Parse room prices from ViewBag.RoomPrices
+        const roomPrices = @Html.Raw(Json.Serialize(ViewBag.RoomPrices));
+
+        console.log("Room Prices Loaded:", roomPrices); // Debugging
+
+        function calculateTotalPrice() {
+            const roomId = $('#RoomID_Edit').val();
+            const checkInDate = $('#CheckInDate_Edit').val();
+            const checkOutDate = $('#CheckOutDate_Edit').val();
+
+            console.log("Selected Room:", roomId);
+            console.log("Check-in Date:", checkInDate);
+            console.log("Check-out Date:", checkOutDate);
+
+            if (!roomId || !checkInDate || !checkOutDate) {
+                $('#TotalPrice_Edit').val('');
+                return;
+            }
+
+            const roomPrice = parseFloat(roomPrices[roomId]); // Ensure conversion to a number
+            if (isNaN(roomPrice)) {
+                console.error("Invalid Room Price for RoomID:", roomId);
+                $('#TotalPrice_Edit').val('');
+                return;
+            }
+
+            const startDate = new Date(checkInDate);
+            const endDate = new Date(checkOutDate);
+
+            if (endDate <= startDate) {
+                alert('Check-out date must be after check-in date.');
+                $('#TotalPrice_Edit').val('');
+                return;
+            }
+
+            // Calculate total nights
+            const numberOfDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+
+            console.log("Number of Nights:", numberOfDays);
+            console.log("Room Price Per Night:", roomPrice);
+
+            // Calculate total price
+            const totalPrice = roomPrice * numberOfDays;
+            console.log("Total Price Calculated:", totalPrice);
+
+            // Update the Total Price field
+            $('#TotalPrice_Edit').val(totalPrice.toFixed(2));
+        }
+
+        // Ensure check-out date is after check-in date
+        $('#CheckInDate_Edit').on('change', function () {
+            let minCheckoutDate = new Date($(this).val());
+            minCheckoutDate.setDate(minCheckoutDate.getDate() + 1); // Ensure at least one night stay
+            $('#CheckOutDate_Edit').attr('min', minCheckoutDate.toISOString().split("T")[0]);
+        });
+
+        // Trigger calculation when inputs change
+        $('#RoomID_Edit, #CheckInDate_Edit, #CheckOutDate_Edit').on('change input', function () {
+            calculateTotalPrice();
+        });
+
+        // Initial calculation when the page loads
+        calculateTotalPrice();
+    });
+</script>

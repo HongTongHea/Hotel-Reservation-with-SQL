@@ -21,14 +21,14 @@
                     <div class="mb-3​ fw-bold">
                         <p>Are you sure you wanna delete Custome?</p>
                         <dl class="row">
-                            <dt class="col-sm-4">Reservation ID</dt>
+                            <dt class="col-sm-4">Reservation</dt>
                             <dd class="col-sm-8">@Model.ReservationID</dd>
 
-                            <dt class="col-sm-4">Customer ID</dt>
-                            <dd class="col-sm-8">@Model.CustomerId</dd>
+                            <dt class="col-sm-4">Customer Name</dt>
+                            <dd class="col-sm-8">@Model.Customer.FirstName @Model.Customer.LastName</dd>
 
-                            <dt class="col-sm-4">Room ID</dt>
-                            <dd class="col-sm-8">@Model.RoomId</dd>
+                            <dt class="col-sm-4">Room Number</dt>
+                            <dd class="col-sm-8">@Model.Room.RoomNumber</dd>
 
                             <dt class="col-sm-4">Amount</dt>
                             <dd class="col-sm-8">$@Model.Amount</dd>

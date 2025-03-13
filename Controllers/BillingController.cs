@@ -39,6 +39,25 @@ namespace Hotel_Reservation.Controllers
             return View(billing);
         }
 
+        [HttpGet]
+        public async Task<JsonResult> GetReservationTotalPrice(int id)
+        {
+            var reservation = await _context.Reservation
+                                            .Where(r => r.ReservationID == id)
+                                            .Select(r => r.TotalPrice ?? 0)
+                                            .FirstOrDefaultAsync();
+            return Json(reservation);
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetServiceRate(int id)
+        {
+            var service = await _context.Services
+                                        .Where(s => s.ServiceID == id)
+                                        .Select(s => s.ServiceRate)
+                                        .FirstOrDefaultAsync();
+            return Json(service);
+        }
 
         public IActionResult Create()
         {

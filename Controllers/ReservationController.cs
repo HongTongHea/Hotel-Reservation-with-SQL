@@ -103,6 +103,7 @@ namespace Hotel_Reservation.Controllers
                 CustomerID = c.CustomerID,
                 FullName = c.FirstName + " " + c.LastName
             }), "CustomerID", "FullName", reservation.CustomerID);
+            ViewBag.RoomPrices = _context.Room.ToDictionary(r => r.RoomID, r => r.RoomPrice);
             ViewBag.Rooms = new SelectList(_context.Room, "RoomID", "RoomNumber", reservation.RoomID);
             return PartialView("Edit", reservation);
         }
